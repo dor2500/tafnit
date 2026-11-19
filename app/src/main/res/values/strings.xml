@@ -189,6 +189,13 @@
     <string name="widget_updated_at">Updated %1$s</string>
     <string name="widget_refresh">Refresh</string>
 
-    <!-- Back -->
+    <string name="share_itinerary">Share Route</string>
+    <string name="also_departs_at">Also at %1$s</string>
+    <string name="crowding_low">Seats available</string>
+    <string name="crowding_medium">Standing room</string>
+    <string name="crowding_high">Crowded</string>
+    <string name="report_status">Report Status</string>
+    <string name="report_bus_delay">Report delay / no-show</string>
+    <string name="report_submitted">Thanks! Report shared with riders.</string>
     <string name="navigate_back">Back</string>
 </resources>

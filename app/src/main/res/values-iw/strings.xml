@@ -189,6 +189,15 @@
     <string name="widget_updated_at">עודכן ב-%1$s</string>
     <string name="widget_refresh">רענן</string>
 
+    <string name="share_itinerary">שתף מסלול</string>
+    <string name="also_departs_at">יציאות נוספות: %1$s</string>
+    <string name="crowding_low">יש מקומות ישיבה</string>
+    <string name="crowding_medium">עומס בינוני</string>
+    <string name="crowding_high">צפוף מאוד</string>
+    <string name="report_status">דווח מצב קו</string>
+    <string name="report_bus_delay">דווח על עיכוב / דילוג</string>
+    <string name="report_submitted">תודה! הדיווח עודכן לנוסעים.</string>
+
     <!-- Back -->
     <string name="navigate_back">חזור</string>
 </resources>

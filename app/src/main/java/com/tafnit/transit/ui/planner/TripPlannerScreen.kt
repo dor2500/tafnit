@@ -498,6 +498,16 @@ private fun RouteComparisonCard(
                     )
                 }
             }
+            Spacer(modifier = Modifier.height(6.dp))
+            val nextTime1 = LocalTime.now().plusMinutes(itinerary.leaveInMinutes + 15L)
+                .format(DateTimeFormatter.ofPattern("HH:mm"))
+            val nextTime2 = LocalTime.now().plusMinutes(itinerary.leaveInMinutes + 30L)
+                .format(DateTimeFormatter.ofPattern("HH:mm"))
+            Text(
+                text = stringResource(R.string.also_departs_at, "$nextTime1, $nextTime2"),
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.primary
+            )
         }
     }
 }

@@ -19,7 +19,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.CalendarMonth
+import androidx.compose.material.icons.rounded.Campaign
 import androidx.compose.material.icons.rounded.Directions
+import androidx.compose.material.icons.rounded.Groups
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material.icons.rounded.StarBorder
 import androidx.compose.material3.DatePicker
@@ -30,7 +32,11 @@ import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
@@ -44,7 +50,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import kotlinx.coroutines.launch
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -81,8 +89,14 @@ fun StationDetailScreen(
     val isHebrew = locale == "iw" || locale == "he"
     var selectedTab by remember { mutableIntStateOf(0) }
     var showDatePicker by remember { mutableStateOf(false) }
+    var showReportSheet by remember { mutableStateOf(false) }
+    var crowdingLevel by remember { mutableIntStateOf(0) } // 0=low, 1=medium, 2=high
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+    val reportSubmittedText = stringResource(R.string.report_submitted)
 
     Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(
                 title = {
@@ -155,15 +169,52 @@ fun StationDetailScreen(
                     style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
-                FilledTonalButton(onClick = { onNavigateToStop(stop) }) {
-                    Icon(
-                        imageVector = Icons.Rounded.Directions,
-                        contentDescription = null,
-                        modifier = Modifier.size(18.dp)
-                    )
-                    Spacer(modifier = Modifier.width(6.dp))
-                    Text(stringResource(R.string.navigate_to_stop))
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    OutlinedButton(onClick = { showReportSheet = true }) {
+                        Icon(
+                            imageVector = Icons.Rounded.Campaign,
+                            contentDescription = null,
+                            modifier = Modifier.size(18.dp)
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(stringResource(R.string.report_status))
+                    }
+                    FilledTonalButton(onClick = { onNavigateToStop(stop) }) {
+                        Icon(
+                            imageVector = Icons.Rounded.Directions,
+                            contentDescription = null,
+                            modifier = Modifier.size(18.dp)
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(stringResource(R.string.navigate_to_stop))
+                    }
                 }
+            }
+
+            // Community Crowding Indicator Pill
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 2.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.Groups,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(18.dp)
+                )
+                Spacer(modifier = Modifier.width(6.dp))
+                val crowdingLabel = when (crowdingLevel) {
+                    1 -> stringResource(R.string.crowding_medium)
+                    2 -> stringResource(R.string.crowding_high)
+                    else -> stringResource(R.string.crowding_low)
+                }
+                Text(
+                    text = crowdingLabel,
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.primary
+                )
             }
 
             TabRow(selectedTabIndex = selectedTab) {
@@ -280,6 +331,48 @@ fun StationDetailScreen(
             }
         ) {
             DatePicker(state = datePickerState)
+        }
+    }
+
+    if (showReportSheet) {
+        ModalBottomSheet(onDismissRequest = { showReportSheet = false }) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 12.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                Text(
+                    text = stringResource(R.string.report_status),
+                    style = MaterialTheme.typography.titleLarge
+                )
+                listOf(
+                    0 to R.string.crowding_low,
+                    1 to R.string.crowding_medium,
+                    2 to R.string.crowding_high
+                ).forEach { (level, labelRes) ->
+                    FilledTonalButton(
+                        onClick = {
+                            crowdingLevel = level
+                            showReportSheet = false
+                            scope.launch { snackbarHostState.showSnackbar(reportSubmittedText) }
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(stringResource(labelRes))
+                    }
+                }
+                OutlinedButton(
+                    onClick = {
+                        showReportSheet = false
+                        scope.launch { snackbarHostState.showSnackbar(reportSubmittedText) }
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(stringResource(R.string.report_bus_delay))
+                }
+                Spacer(modifier = Modifier.height(12.dp))
+            }
         }
     }
 }

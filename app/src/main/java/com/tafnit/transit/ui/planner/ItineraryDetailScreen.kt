@@ -1,5 +1,6 @@
 package com.tafnit.transit.ui.planner
 
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -24,6 +25,7 @@ import androidx.compose.material.icons.rounded.DirectionsWalk
 import androidx.compose.material.icons.rounded.ExpandLess
 import androidx.compose.material.icons.rounded.ExpandMore
 import androidx.compose.material.icons.rounded.Navigation
+import androidx.compose.material.icons.rounded.Share
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
@@ -42,6 +44,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -86,6 +89,7 @@ fun ItineraryDetailContent(
     onBack: () -> Unit,
     onStartTrip: () -> Unit
 ) {
+    val context = LocalContext.current
     val polylines = itinerary.legs.map { leg ->
         leg.polyline to (leg.mode == TransitMode.WALK)
     }
@@ -110,6 +114,33 @@ fun ItineraryDetailContent(
                         Icon(
                             imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                             contentDescription = stringResource(R.string.navigate_back)
+                        )
+                    }
+                },
+                actions = {
+                    IconButton(
+                        onClick = {
+                            val summary = buildString {
+                                appendLine("Tafnit (תפנית) • ${itinerary.totalDurationMinutes} min (${itinerary.departureTime} – ${itinerary.arrivalTime})")
+                                itinerary.legs.forEach { leg ->
+                                    if (leg.mode == TransitMode.WALK) {
+                                        appendLine("• Walk ${leg.durationMinutes} min (${leg.distanceMeters} m)")
+                                    } else {
+                                        val stopName = leg.boardingStop?.localizedName(isHebrew) ?: ""
+                                        appendLine("• Line ${leg.lineNumber} at $stopName (${leg.departureTime} → ${leg.arrivalTime})")
+                                    }
+                                }
+                            }
+                            val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                                type = "text/plain"
+                                putExtra(Intent.EXTRA_TEXT, summary)
+                            }
+                            context.startActivity(Intent.createChooser(shareIntent, context.getString(R.string.share_itinerary)))
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.Share,
+                            contentDescription = stringResource(R.string.share_itinerary)
                         )
                     }
                 }
