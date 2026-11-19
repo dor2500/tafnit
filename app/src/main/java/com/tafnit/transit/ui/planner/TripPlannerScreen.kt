@@ -72,6 +72,7 @@ import java.time.format.DateTimeFormatter
 fun TripPlannerScreen(
     viewModel: TripPlannerViewModel,
     onBack: () -> Unit,
+    onOpenSearchForOrigin: () -> Unit,
     onOpenSearchForDest: () -> Unit,
     onOpenItinerary: (TripItinerary) -> Unit
 ) {
@@ -84,6 +85,7 @@ fun TripPlannerScreen(
         isHebrew = isHebrew,
         onBack = onBack,
         onSwap = viewModel::swapOriginDestination,
+        onEditOrigin = onOpenSearchForOrigin,
         onEditDestination = onOpenSearchForDest,
         onApplyFilter = viewModel::updateFilter,
         onTimeOptionChange = viewModel::updateTimeOption,
@@ -101,6 +103,7 @@ fun TripPlannerContent(
     isHebrew: Boolean,
     onBack: () -> Unit,
     onSwap: () -> Unit,
+    onEditOrigin: () -> Unit = {},
     onEditDestination: () -> Unit,
     onApplyFilter: (Set<TransitMode>, RouteOptimization) -> Unit,
     onTimeOptionChange: (TimeOption) -> Unit,
@@ -161,6 +164,7 @@ fun TripPlannerContent(
                 ) {
                     Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                         Surface(
+                            modifier = Modifier.clickable(onClick = onEditOrigin),
                             shape = RoundedCornerShape(12.dp),
                             color = MaterialTheme.colorScheme.surfaceContainer
                         ) {

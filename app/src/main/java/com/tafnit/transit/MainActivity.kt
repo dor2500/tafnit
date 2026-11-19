@@ -212,8 +212,10 @@ fun TafnitAppNavHost() {
                             }
                         },
                         onSelectDestination = { place ->
-                            plannerViewModel.setDestination(place)
-                            navController.navigate(TripPlannerRoute)
+                            plannerViewModel.setPlaceForTarget(place)
+                            navController.navigate(TripPlannerRoute) {
+                                popUpTo(TripPlannerRoute) { inclusive = true }
+                            }
                         },
                         onPickOnMap = { navController.navigate(MapPickerRoute) }
                     )
@@ -223,8 +225,10 @@ fun TafnitAppNavHost() {
                     MapPickerScreen(
                         onBack = { navController.popBackStack() },
                         onConfirmPlace = { place ->
-                            plannerViewModel.setDestination(place)
-                            navController.navigate(TripPlannerRoute)
+                            plannerViewModel.setPlaceForTarget(place)
+                            navController.navigate(TripPlannerRoute) {
+                                popUpTo(TripPlannerRoute) { inclusive = true }
+                            }
                         }
                     )
                 }
@@ -233,7 +237,14 @@ fun TafnitAppNavHost() {
                     TripPlannerScreen(
                         viewModel = plannerViewModel,
                         onBack = { navController.popBackStack() },
-                        onOpenSearchForDest = { navController.navigate(SearchRoute) },
+                        onOpenSearchForOrigin = {
+                            plannerViewModel.pendingSearchTarget = com.tafnit.transit.ui.planner.SearchTarget.ORIGIN
+                            navController.navigate(SearchRoute)
+                        },
+                        onOpenSearchForDest = {
+                            plannerViewModel.pendingSearchTarget = com.tafnit.transit.ui.planner.SearchTarget.DESTINATION
+                            navController.navigate(SearchRoute)
+                        },
                         onOpenItinerary = { navController.navigate(ItineraryDetailRoute) }
                     )
                 }

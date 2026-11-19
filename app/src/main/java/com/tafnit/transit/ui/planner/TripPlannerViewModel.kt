@@ -39,6 +39,11 @@ data class TripPlannerUiState(
     val isLoading: Boolean = false
 )
 
+enum class SearchTarget {
+    ORIGIN,
+    DESTINATION
+}
+
 @HiltViewModel
 class TripPlannerViewModel @Inject constructor(
     private val tripPlannerRepository: TripPlannerRepository,
@@ -49,6 +54,8 @@ class TripPlannerViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(TripPlannerUiState())
     val uiState: StateFlow<TripPlannerUiState> = _uiState.asStateFlow()
+
+    var pendingSearchTarget: SearchTarget = SearchTarget.DESTINATION
 
     init {
         viewModelScope.launch {
@@ -68,9 +75,23 @@ class TripPlannerViewModel @Inject constructor(
         }
     }
 
+    fun setOrigin(place: PlaceResult) {
+        _uiState.value = _uiState.value.copy(origin = place)
+        recalculateRoutes()
+    }
+
     fun setDestination(place: PlaceResult) {
         _uiState.value = _uiState.value.copy(destination = place)
         recalculateRoutes()
+    }
+
+    fun setPlaceForTarget(place: PlaceResult) {
+        if (pendingSearchTarget == SearchTarget.ORIGIN) {
+            setOrigin(place)
+        } else {
+            setDestination(place)
+        }
+        pendingSearchTarget = SearchTarget.DESTINATION
     }
 
     fun swapOriginDestination() {

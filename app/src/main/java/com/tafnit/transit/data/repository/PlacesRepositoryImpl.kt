@@ -133,60 +133,60 @@ class PlacesRepositoryImpl @Inject constructor(
                 it.subtitleHe.lowercase().contains(qLower)
         }
 
-        val prefs = preferencesRepository.preferences.first()
-        val remotePlaces = if (prefs.useLiveApi) {
-            runCatching {
-                photonApi.search(
-                    query = q,
-                    lat = biasLocation.latitude,
-                    lon = biasLocation.longitude
-                ).features.mapIndexedNotNull { idx, feature ->
-                    val coords = feature.geometry.coordinates
-                    if (coords.size < 2) return@mapIndexedNotNull null
-                    val props = feature.properties
-                    val title = props.name
-                        ?: listOfNotNull(props.street, props.housenumber).joinToString(" ")
-                            .ifBlank { return@mapIndexedNotNull null }
-                    val subtitle = listOfNotNull(props.street, props.city, props.country)
-                        .distinct()
-                        .joinToString(", ")
-                    PlaceResult(
-                        id = "photon_${idx}_${coords[1]}_${coords[0]}",
-                        nameEn = title,
-                        nameHe = title,
-                        subtitleEn = subtitle.ifBlank { "Israel" },
-                        subtitleHe = subtitle.ifBlank { "ישראל" },
-                        location = LatLng(coords[1], coords[0]),
-                        category = PlaceCategory.ADDRESS
-                    )
-                }
-            }.getOrDefault(emptyList())
-        } else emptyList()
+        // Always query OpenStreetMap Photon API for real Israeli addresses & POIs,
+        // falling back gracefully to local stops & landmarks when offline.
+        val remotePlaces = runCatching {
+            photonApi.search(
+                query = q,
+                lat = biasLocation.latitude,
+                lon = biasLocation.longitude
+            ).features.mapIndexedNotNull { idx, feature ->
+                val coords = feature.geometry.coordinates
+                if (coords.size < 2) return@mapIndexedNotNull null
+                val props = feature.properties
+                val streetAndNum = listOfNotNull(props.street, props.housenumber)
+                    .joinToString(" ")
+                    .trim()
+                val title = props.name?.takeIf { it.isNotBlank() }
+                    ?: streetAndNum.ifBlank { return@mapIndexedNotNull null }
+                val subtitle = listOfNotNull(
+                    streetAndNum.takeIf { it.isNotBlank() && it != title },
+                    props.city ?: props.state,
+                    props.country
+                ).distinct().joinToString(", ")
+                PlaceResult(
+                    id = "photon_${idx}_${coords[1]}_${coords[0]}",
+                    nameEn = title,
+                    nameHe = title,
+                    subtitleEn = subtitle.ifBlank { "Israel" },
+                    subtitleHe = subtitle.ifBlank { "ישראל" },
+                    location = LatLng(coords[1], coords[0]),
+                    category = PlaceCategory.ADDRESS
+                )
+            }
+        }.getOrDefault(emptyList())
 
-        return (matchingStops + matchingLandmarks + remotePlaces).distinctBy { it.id }
+        return (matchingStops + remotePlaces + matchingLandmarks).distinctBy { it.id }
     }
 
     override suspend fun reverseGeocode(location: LatLng): PlaceResult {
-        val prefs = preferencesRepository.preferences.first()
-        if (prefs.useLiveApi) {
-            val remote = runCatching {
-                photonApi.reverse(location.latitude, location.longitude).features.firstOrNull()
-            }.getOrNull()
-            if (remote != null) {
-                val props = remote.properties
-                val title = props.name ?: listOfNotNull(props.street, props.housenumber).joinToString(" ")
-                if (title.isNotBlank()) {
-                    val city = props.city ?: "Israel"
-                    return PlaceResult(
-                        id = "picked_${location.latitude}_${location.longitude}",
-                        nameEn = title,
-                        nameHe = title,
-                        subtitleEn = city,
-                        subtitleHe = city,
-                        location = location,
-                        category = PlaceCategory.ADDRESS
-                    )
-                }
+        val remote = runCatching {
+            photonApi.reverse(location.latitude, location.longitude).features.firstOrNull()
+        }.getOrNull()
+        if (remote != null) {
+            val props = remote.properties
+            val title = props.name ?: listOfNotNull(props.street, props.housenumber).joinToString(" ")
+            if (title.isNotBlank()) {
+                val city = props.city ?: "Israel"
+                return PlaceResult(
+                    id = "picked_${location.latitude}_${location.longitude}",
+                    nameEn = title,
+                    nameHe = title,
+                    subtitleEn = city,
+                    subtitleHe = city,
+                    location = location,
+                    category = PlaceCategory.ADDRESS
+                )
             }
         }
         val nearestStop = IsraelTransitDataset.stops.minByOrNull {

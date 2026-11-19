@@ -36,14 +36,18 @@ class TripPlannerRepositoryImpl @Inject constructor() : TripPlannerRepository {
             it.code != originStop.code && it.code != destStop.code
         } ?: IsraelTransitDataset.stops[2]
 
-        val now = LocalTime.of(18, 25)
+        val totalMeters = IsraelTransitDataset.haversineMeters(origin.location, destination.location)
+            .coerceAtLeast(800)
+        val estimatedTransitMin = (totalMeters / 420).coerceIn(8, 95)
+
+        val now = LocalTime.now()
         val candidates = mutableListOf<TripItinerary>()
 
         // Route 1: Direct Egged Bus 274 (fastest direct bus)
         if (TransitMode.BUS in filter.modes) {
-            val walkStart = 3
-            val busDur = 19
-            val walkEnd = 3
+            val walkStart = (IsraelTransitDataset.haversineMeters(origin.location, originStop.location) / 75).coerceIn(2, 8)
+            val busDur = estimatedTransitMin
+            val walkEnd = (IsraelTransitDataset.haversineMeters(destStop.location, destination.location) / 75).coerceIn(2, 8)
             val total = walkStart + busDur + walkEnd
             candidates += TripItinerary(
                 id = "route_274_direct",
@@ -60,9 +64,9 @@ class TripPlannerRepositoryImpl @Inject constructor() : TripPlannerRepository {
                         mode = TransitMode.WALK,
                         boardingStop = originStop,
                         durationMinutes = walkStart,
-                        distanceMeters = 220,
+                        distanceMeters = walkStart * 75,
                         departureTime = now.plusMinutes(2).format(timeFormatter),
-                        arrivalTime = now.plusMinutes(5).format(timeFormatter),
+                        arrivalTime = now.plusMinutes(2L + walkStart).format(timeFormatter),
                         polyline = listOf(origin.location, originStop.location)
                     ),
                     TripLeg(
@@ -76,9 +80,9 @@ class TripPlannerRepositoryImpl @Inject constructor() : TripPlannerRepository {
                         alightingStop = destStop,
                         intermediateStops = listOf(midStop),
                         durationMinutes = busDur,
-                        distanceMeters = 6400,
-                        departureTime = now.plusMinutes(5).format(timeFormatter),
-                        arrivalTime = now.plusMinutes(24).format(timeFormatter),
+                        distanceMeters = totalMeters,
+                        departureTime = now.plusMinutes(2L + walkStart).format(timeFormatter),
+                        arrivalTime = now.plusMinutes(2L + walkStart + busDur).format(timeFormatter),
                         isLive = true,
                         polyline = listOf(originStop.location, midStop.location, destStop.location)
                     ),
@@ -87,9 +91,9 @@ class TripPlannerRepositoryImpl @Inject constructor() : TripPlannerRepository {
                         mode = TransitMode.WALK,
                         alightingStop = destStop,
                         durationMinutes = walkEnd,
-                        distanceMeters = 210,
-                        departureTime = now.plusMinutes(24).format(timeFormatter),
-                        arrivalTime = now.plusMinutes(27).format(timeFormatter),
+                        distanceMeters = walkEnd * 75,
+                        departureTime = now.plusMinutes(2L + walkStart + busDur).format(timeFormatter),
+                        arrivalTime = now.plusMinutes(2L + total).format(timeFormatter),
                         polyline = listOf(destStop.location, destination.location)
                     )
                 )
