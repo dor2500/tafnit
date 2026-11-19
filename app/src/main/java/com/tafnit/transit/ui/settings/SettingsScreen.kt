@@ -104,7 +104,8 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch {
             _updateState.value = UpdateCheckState.Checking
             runCatching {
-                gitHubReleaseApi.getLatestRelease()
+                runCatching { gitHubReleaseApi.getLatestRelease() }
+                    .getOrElse { gitHubReleaseApi.getReleases().first() }
             }.onSuccess { release ->
                 val apkUrl = release.assets
                     .firstOrNull { it.name.endsWith(".apk", ignoreCase = true) }

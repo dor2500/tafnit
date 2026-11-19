@@ -21,9 +21,19 @@ data class GitHubReleaseAssetDto(
 )
 
 interface GitHubReleaseApiService {
-    @Headers("Accept: application/vnd.github+json")
+    @Headers(
+        "Accept: application/vnd.github+json",
+        "User-Agent: Tafnit-Android"
+    )
     @GET("repos/dor2500/tafnit/releases/latest")
     suspend fun getLatestRelease(): GitHubReleaseDto
+
+    @Headers(
+        "Accept: application/vnd.github+json",
+        "User-Agent: Tafnit-Android"
+    )
+    @GET("repos/dor2500/tafnit/releases?per_page=1")
+    suspend fun getReleases(): List<GitHubReleaseDto>
 }
 
 object VersionComparator {
