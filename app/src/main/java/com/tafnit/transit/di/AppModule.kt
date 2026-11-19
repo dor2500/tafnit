@@ -11,6 +11,7 @@ import com.tafnit.transit.data.local.RecentSearchDao
 import com.tafnit.transit.data.local.TafnitDatabase
 import com.tafnit.transit.data.local.UserPreferencesRepositoryImpl
 import com.tafnit.transit.data.remote.GitHubReleaseApiService
+import com.tafnit.transit.data.remote.NominatimApiService
 import com.tafnit.transit.data.remote.OpenBusApiService
 import com.tafnit.transit.data.remote.PhotonApiService
 import com.tafnit.transit.data.repository.LocationRepositoryImpl
@@ -109,6 +110,21 @@ object NetworkAndDatabaseModule {
     @Singleton
     fun provideGitHubReleaseApi(@Named("github") retrofit: Retrofit): GitHubReleaseApiService =
         retrofit.create(GitHubReleaseApiService::class.java)
+
+    @Provides
+    @Singleton
+    @Named("nominatim")
+    fun provideNominatimRetrofit(client: OkHttpClient, json: Json): Retrofit =
+        Retrofit.Builder()
+            .baseUrl("https://nominatim.openstreetmap.org/")
+            .client(client)
+            .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
+            .build()
+
+    @Provides
+    @Singleton
+    fun provideNominatimApi(@Named("nominatim") retrofit: Retrofit): NominatimApiService =
+        retrofit.create(NominatimApiService::class.java)
 
     @Provides
     @Singleton

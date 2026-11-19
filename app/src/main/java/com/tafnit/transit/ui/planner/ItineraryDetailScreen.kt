@@ -1,6 +1,7 @@
 package com.tafnit.transit.ui.planner
 
 import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -24,6 +25,7 @@ import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.DirectionsWalk
 import androidx.compose.material.icons.rounded.ExpandLess
 import androidx.compose.material.icons.rounded.ExpandMore
+import androidx.compose.material.icons.rounded.Map
 import androidx.compose.material.icons.rounded.Navigation
 import androidx.compose.material.icons.rounded.Share
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -118,6 +120,23 @@ fun ItineraryDetailContent(
                     }
                 },
                 actions = {
+                    IconButton(
+                        onClick = {
+                            val originPt = itinerary.legs.firstOrNull()?.polyline?.firstOrNull()
+                            val destPt = itinerary.legs.lastOrNull()?.polyline?.lastOrNull()
+                            val url = if (originPt != null && destPt != null) {
+                                "https://www.google.com/maps/dir/?api=1&origin=${originPt.latitude},${originPt.longitude}&destination=${destPt.latitude},${destPt.longitude}&travelmode=transit"
+                            } else {
+                                "https://www.google.com/maps"
+                            }
+                            context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.Map,
+                            contentDescription = stringResource(R.string.open_in_google_maps)
+                        )
+                    }
                     IconButton(
                         onClick = {
                             val summary = buildString {

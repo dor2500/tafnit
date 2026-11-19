@@ -197,6 +197,7 @@
     <string name="report_status">דווח מצב קו</string>
     <string name="report_bus_delay">דווח על עיכוב / דילוג</string>
     <string name="report_submitted">תודה! הדיווח עודכן לנוסעים.</string>
+    <string name="open_in_google_maps">פתח ב-Google Maps</string>
 
     <!-- Back -->
     <string name="navigate_back">חזור</string>

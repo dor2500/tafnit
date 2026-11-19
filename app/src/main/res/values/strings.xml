@@ -197,5 +197,6 @@
     <string name="report_status">Report Status</string>
     <string name="report_bus_delay">Report delay / no-show</string>
     <string name="report_submitted">Thanks! Report shared with riders.</string>
+    <string name="open_in_google_maps">Open in Google Maps</string>
     <string name="navigate_back">Back</string>
 </resources>
