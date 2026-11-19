@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Tafnit</string>
+    <string name="app_tagline">Fast, open-source Material You transit for Israel</string>
+
+    <!-- Navigation Tabs -->
+    <string name="tab_directions">Directions</string>
+    <string name="tab_stations">Stations</string>
+    <string name="tab_lines">Lines</string>
+
+    <!-- Home & Map -->
+    <string name="search_placeholder">Where do you want to go?</string>
+    <string name="service_alerts">Service Alerts</string>
+    <string name="settings">Settings</string>
+    <string name="recenter_map">Recenter on location</string>
+    <string name="map_layers">Map layers</string>
+    <string name="layer_standard">Standard</string>
+    <string name="layer_transit">Transit</string>
+    <string name="layer_dark">Night</string>
+    <string name="nearby_stops">Nearby Stops</string>
+    <string name="live_vehicles_count">%1$d live vehicles nearby</string>
+    <string name="chip_home">Home</string>
+    <string name="chip_work">Work</string>
+    <string name="min_away">%1$d min</string>
+    <string name="min_walk">%1$d min walk</string>
+    <string name="meters_away">%1$d m</string>
+    <string name="stop_code_prefix">Stop %1$s</string>
+    <string name="live_indicator">Live</string>
+    <string name="scheduled_indicator">Scheduled</string>
+
+    <!-- Search & Favorites -->
+    <string name="search_for_a_line">Search for a line</string>
+    <string name="search_for_a_line_subtitle">Filter by number, operator, or city</string>
+    <string name="favorites">Favorites</string>
+    <string name="add_favorite">Add +</string>
+    <string name="recent_searches">Recent Searches</string>
+    <string name="autocomplete_results">Search Results</string>
+    <string name="didnt_find_prompt">Didn\'t find what you\'re looking for?</string>
+    <string name="pick_on_map">Pick on Map</string>
+    <string name="confirm_location">Confirm Location</string>
+    <string name="move_pin_hint">Drag the map to position the pin</string>
+    <string name="edit">Edit</string>
+    <string name="rename">Rename</string>
+    <string name="set_on_map">Set on Map</string>
+    <string name="delete">Delete</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="place_name">Place name</string>
+    <string name="choose_icon">Choose icon</string>
+    <string name="add_favorite_title">Save Favorite Place</string>
+    <string name="edit_favorite_title">Edit Favorite Place</string>
+    <string name="toggle_favorite">Toggle favorite</string>
+
+    <!-- Trip Planner -->
+    <string name="trip_planner">Trip Planner</string>
+    <string name="current_location">Current Location</string>
+    <string name="origin">Origin</string>
+    <string name="destination">Destination</string>
+    <string name="swap_origin_dest">Swap origin and destination</string>
+    <string name="leave_now">Leave now</string>
+    <string name="depart_at">Depart at %1$s</string>
+    <string name="arrive_by">Arrive by %1$s</string>
+    <string name="route_filters">Filters</string>
+    <string name="transit_modes">Transit Modes</string>
+    <string name="mode_bus">Bus</string>
+    <string name="mode_rail">Israel Railways</string>
+    <string name="mode_light_rail">Light Rail (Dankal / Kfir)</string>
+    <string name="mode_shuttle">Shuttle / Service</string>
+    <string name="route_optimization">Route Priority</string>
+    <string name="opt_fastest">Fastest</string>
+    <string name="opt_least_walking">Least Walking</string>
+    <string name="opt_fewest_transfers">Fewest Transfers</string>
+    <string name="opt_accessible">Wheelchair Accessible</string>
+    <string name="leave_in_min">Leave in %1$d min</string>
+    <string name="total_walk_min">%1$d min walk</string>
+    <string name="transfers_count">%1$d transfer(s)</string>
+    <string name="direct_route">Direct</string>
+    <string name="itinerary_details">Itinerary Details</string>
+    <string name="start_trip">Start Trip</string>
+    <string name="walk_to_stop">Walk to %1$s</string>
+    <string name="walk_to_dest">Walk to destination</string>
+    <string name="board_line_at">Board Line %1$s at %2$s</string>
+    <string name="towards_headsign">Towards %1$s</string>
+    <string name="intermediate_stops">%1$d stops (%2$d min)</string>
+    <string name="get_off_at">Get off at %1$s</string>
+    <string name="apply_filters">Apply</string>
+    <string name="select_time">Select time</string>
+    <string name="select_date">Select date</string>
+    <string name="depart_at_option">Depart at</string>
+    <string name="arrive_by_option">Arrive by</string>
+
+    <!-- Live Navigation -->
+    <string name="live_navigation">Live Navigation</string>
+    <string name="stop_navigation">Stop Navigation</string>
+    <string name="simulate_trip">Simulate Trip</string>
+    <string name="simulating_active">Demo Simulation Active</string>
+    <string name="advance_step">Next Step</string>
+    <string name="stops_remaining">%1$d stops remaining</string>
+    <string name="next_stop_label">Next stop: %1$s</string>
+    <string name="alighting_stop_label">Get off at: %1$s</string>
+    <string name="leg_walking">Walk to stop</string>
+    <string name="leg_waiting">Waiting for Line %1$s</string>
+    <string name="leg_onboard">On board Line %1$s</string>
+    <string name="leg_arrived">You have arrived!</string>
+    <string name="alert_two_stops_title">Get ready to get off</string>
+    <string name="alert_two_stops_body">2 stops remaining until %1$s</string>
+    <string name="alert_one_stop_title">Next stop is yours!</string>
+    <string name="alert_one_stop_body">Get off at the next stop: %1$s</string>
+    <string name="alert_arrived_title">Get off now!</string>
+    <string name="alert_arrived_body">Arriving at %1$s</string>
+    <string name="notif_channel_nav_name">Live Navigation</string>
+    <string name="notif_channel_nav_desc">Ongoing progress and ETA during active trips</string>
+    <string name="notif_channel_alerts_name">Get-Off Alerts</string>
+    <string name="notif_channel_alerts_desc">High-priority alerts when approaching your stop</string>
+
+    <!-- Stations & Lines -->
+    <string name="station_details">Station Details</string>
+    <string name="navigate_to_stop">Navigate to Stop</string>
+    <string name="live_arrivals">Live Arrivals</string>
+    <string name="full_timetable">Timetable</string>
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
+    <string name="pick_date">Date</string>
+    <string name="all_lines">All Lines</string>
+    <string name="no_arrivals_found">No upcoming arrivals found</string>
+    <string name="lines_search_placeholder">Line number, operator, or city</string>
+    <string name="favorite_lines">Favorite Lines</string>
+    <string name="all_lines_section">All Lines</string>
+    <string name="line_details">Line Details</string>
+    <string name="direction_outbound">Outbound</string>
+    <string name="direction_return">Return</string>
+    <string name="stops_timeline">Stops</string>
+    <string name="schedule_tab">Schedule</string>
+    <string name="active_disruption_banner">Active Service Alert on this line</string>
+    <string name="bus_approaching_here">Bus nearby</string>
+
+    <!-- Service Alerts -->
+    <string name="alerts_title">Service Alerts &amp; Disruptions</string>
+    <string name="filter_my_favorites">My Favorites</string>
+    <string name="filter_all_nearby">All Nearby</string>
+    <string name="affected_lines">Affected: %1$s</string>
+    <string name="no_alerts_favorites">No active alerts for your favorite lines or stops</string>
+
+    <!-- Settings -->
+    <string name="settings_language">Language</string>
+    <string name="lang_system">System Default</string>
+    <string name="lang_he">עברית (RTL)</string>
+    <string name="lang_en">English (LTR)</string>
+    <string name="settings_appearance">Appearance</string>
+    <string name="theme_mode">Theme</string>
+    <string name="theme_system">System</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="dynamic_color">Dynamic Color (Material You)</string>
+    <string name="dynamic_color_desc">Adapt colors from your wallpaper (Android 12+)</string>
+    <string name="settings_navigation">Navigation &amp; Get-Off Alerts</string>
+    <string name="get_off_trigger">Get-Off Alert Trigger</string>
+    <string name="stops_before_1">1 stop before</string>
+    <string name="stops_before_2">2 stops before</string>
+    <string name="alert_sound">Alert Sound</string>
+    <string name="alert_vibration">Alert Vibration</string>
+    <string name="lock_screen_notif">Live Lock-Screen Notification</string>
+    <string name="settings_routing">Default Routing Preferences</string>
+    <string name="max_walk_distance">Max Walking Distance: %1$d m</string>
+    <string name="prefer_accessible">Prefer Wheelchair Accessible Routes</string>
+    <string name="settings_data">Data &amp; Storage</string>
+    <string name="data_mode">Transit Data Source</string>
+    <string name="data_mode_live">Live Open Data (OpenBus + Photon)</string>
+    <string name="data_mode_demo">Offline Demo Mode (Simulated Israel)</string>
+    <string name="clear_recent_searches">Clear Recent Searches</string>
+    <string name="clear_cache">Clear Map &amp; Schedule Cache</string>
+    <string name="cleared_toast">Cleared successfully</string>
+    <string name="app_version">Version %1$s</string>
+    <string name="open_source_licenses">Open-Source Licenses</string>
+
+    <!-- Widgets -->
+    <string name="widget_nearby_name">Tafnit Nearby Arrivals</string>
+    <string name="widget_nearby_description">Closest transit stop and next 3 live arrivals</string>
+    <string name="widget_commute_name">Tafnit Quick Commute</string>
+    <string name="widget_commute_description">One-tap Home, Work, and favorite lines</string>
+    <string name="widget_updated_at">Updated %1$s</string>
+    <string name="widget_refresh">Refresh</string>
+
+    <!-- Back -->
+    <string name="navigate_back">Back</string>
+</resources>

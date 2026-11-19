@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">תפנית</string>
+    <string name="app_tagline">ניווט תחבורה ציבורית מהיר ובקוד פתוח בעיצוב Material You</string>
+
+    <!-- Navigation Tabs -->
+    <string name="tab_directions">מסלולים</string>
+    <string name="tab_stations">תחנות</string>
+    <string name="tab_lines">קווים</string>
+
+    <!-- Home & Map -->
+    <string name="search_placeholder">לאן נוסעים?</string>
+    <string name="service_alerts">עדכונים ושיבושים</string>
+    <string name="settings">הגדרות</string>
+    <string name="recenter_map">מרכז למיקום שלי</string>
+    <string name="map_layers">שכבות מפה</string>
+    <string name="layer_standard">רגילה</string>
+    <string name="layer_transit">תחבורה</string>
+    <string name="layer_dark">לילה</string>
+    <string name="nearby_stops">תחנות קרובות</string>
+    <string name="live_vehicles_count">%1$d כלי רכב פעילים בסביבה</string>
+    <string name="chip_home">בית</string>
+    <string name="chip_work">עבודה</string>
+    <string name="min_away">%1$d דק׳</string>
+    <string name="min_walk">%1$d דק׳ הליכה</string>
+    <string name="meters_away">%1$d מ׳</string>
+    <string name="stop_code_prefix">מק״ט %1$s</string>
+    <string name="live_indicator">זמן אמת</string>
+    <string name="scheduled_indicator">מתוכנן</string>
+
+    <!-- Search & Favorites -->
+    <string name="search_for_a_line">חיפוש קו</string>
+    <string name="search_for_a_line_subtitle">סינון לפי מספר קו, מפעיל או עיר</string>
+    <string name="favorites">מועדפים</string>
+    <string name="add_favorite">הוסף +</string>
+    <string name="recent_searches">חיפושים אחרונים</string>
+    <string name="autocomplete_results">תוצאות חיפוש</string>
+    <string name="didnt_find_prompt">לא מצאת מה שחיפשת?</string>
+    <string name="pick_on_map">בחר על המפה</string>
+    <string name="confirm_location">אשר מיקום</string>
+    <string name="move_pin_hint">גרור את המפה למיקום הסיכה</string>
+    <string name="edit">ערוך</string>
+    <string name="rename">שנה שם</string>
+    <string name="set_on_map">קבע על המפה</string>
+    <string name="delete">מחק</string>
+    <string name="save">שמור</string>
+    <string name="cancel">ביטול</string>
+    <string name="place_name">שם המקום</string>
+    <string name="choose_icon">בחר אייקון</string>
+    <string name="add_favorite_title">שמירת מקום מועדף</string>
+    <string name="edit_favorite_title">עריכת מקום מועדף</string>
+    <string name="toggle_favorite">הוסף או הסר ממועדפים</string>
+
+    <!-- Trip Planner -->
+    <string name="trip_planner">תכנון מסלול</string>
+    <string name="current_location">המיקום הנוכחי</string>
+    <string name="origin">מוצא</string>
+    <string name="destination">יעד</string>
+    <string name="swap_origin_dest">החלף מוצא ויעד</string>
+    <string name="leave_now">צא עכשיו</string>
+    <string name="depart_at">יציאה ב-%1$s</string>
+    <string name="arrive_by">הגעה עד %1$s</string>
+    <string name="route_filters">סינון</string>
+    <string name="transit_modes">אמצעי תחבורה</string>
+    <string name="mode_bus">אוטובוס</string>
+    <string name="mode_rail">רכבת ישראל</string>
+    <string name="mode_light_rail">רכבת קלה (דנקל / כפיר)</string>
+    <string name="mode_shuttle">מונית שירות / שאטל</string>
+    <string name="route_optimization">עדיפות מסלול</string>
+    <string name="opt_fastest">המהיר ביותר</string>
+    <string name="opt_least_walking">פחות הליכה</string>
+    <string name="opt_fewest_transfers">פחות החלפות</string>
+    <string name="opt_accessible">נגיש לכיסא גלגלים</string>
+    <string name="leave_in_min">צא בעוד %1$d דק׳</string>
+    <string name="total_walk_min">%1$d דק׳ הליכה</string>
+    <string name="transfers_count">%1$d החלפות</string>
+    <string name="direct_route">ישיר</string>
+    <string name="itinerary_details">פרטי המסלול</string>
+    <string name="start_trip">צא לדרך</string>
+    <string name="walk_to_stop">הליכה אל %1$s</string>
+    <string name="walk_to_dest">הליכה אל היעד</string>
+    <string name="board_line_at">עלה על קו %1$s בתחנת %2$s</string>
+    <string name="towards_headsign">לכיוון %1$s</string>
+    <string name="intermediate_stops">%1$d תחנות (%2$d דק׳)</string>
+    <string name="get_off_at">רד בתחנת %1$s</string>
+    <string name="apply_filters">החל</string>
+    <string name="select_time">בחר שעה</string>
+    <string name="select_date">בחר תאריך</string>
+    <string name="depart_at_option">יציאה ב-</string>
+    <string name="arrive_by_option">הגעה עד</string>
+
+    <!-- Live Navigation -->
+    <string name="live_navigation">ניווט חי</string>
+    <string name="stop_navigation">סיים ניווט</string>
+    <string name="simulate_trip">הדמיית נסיעה</string>
+    <string name="simulating_active">הדמיית נסיעה פעילה</string>
+    <string name="advance_step">שלב הבא</string>
+    <string name="stops_remaining">עוד %1$d תחנות</string>
+    <string name="next_stop_label">תחנה הבאה: %1$s</string>
+    <string name="alighting_stop_label">ירידה ב: %1$s</string>
+    <string name="leg_walking">הליכה לתחנה</string>
+    <string name="leg_waiting">המתנה לקו %1$s</string>
+    <string name="leg_onboard">על קו %1$s</string>
+    <string name="leg_arrived">הגעת ליעד!</string>
+    <string name="alert_two_stops_title">התכונן לירידה</string>
+    <string name="alert_two_stops_body">נשארו עוד 2 תחנות עד %1$s</string>
+    <string name="alert_one_stop_title">התחנה הבאה שלך!</string>
+    <string name="alert_one_stop_body">רד בתחנה הבאה: %1$s</string>
+    <string name="alert_arrived_title">רד עכשיו!</string>
+    <string name="alert_arrived_body">הגעה אל %1$s</string>
+    <string name="notif_channel_nav_name">ניווט חי</string>
+    <string name="notif_channel_nav_desc">התקדמות בזמן אמת וזמני הגעה במהלך נסיעה</string>
+    <string name="notif_channel_alerts_name">התראות ירידה</string>
+    <string name="notif_channel_alerts_desc">התראות בעדיפות גבוהה לפני תחנת הירידה</string>
+
+    <!-- Stations & Lines -->
+    <string name="station_details">פרטי תחנה</string>
+    <string name="navigate_to_stop">נווט לתחנה</string>
+    <string name="live_arrivals">זמני הגעה חיים</string>
+    <string name="full_timetable">לוח זמנים</string>
+    <string name="today">היום</string>
+    <string name="tomorrow">מחר</string>
+    <string name="pick_date">תאריך</string>
+    <string name="all_lines">כל הקווים</string>
+    <string name="no_arrivals_found">לא נמצאו הגעות קרובות</string>
+    <string name="lines_search_placeholder">מספר קו, מפעיל או עיר</string>
+    <string name="favorite_lines">קווים מועדפים</string>
+    <string name="all_lines_section">כל הקווים</string>
+    <string name="line_details">פרטי קו</string>
+    <string name="direction_outbound">הלוך</string>
+    <string name="direction_return">חזור</string>
+    <string name="stops_timeline">תחנות במסלול</string>
+    <string name="schedule_tab">לוח זמנים</string>
+    <string name="active_disruption_banner">קיים עדכון שיבושים פעיל בקו זה</string>
+    <string name="bus_approaching_here">אוטובוס מתקרב</string>
+
+    <!-- Service Alerts -->
+    <string name="alerts_title">עדכונים ושיבושים</string>
+    <string name="filter_my_favorites">המועדפים שלי</string>
+    <string name="filter_all_nearby">כל הסביבה</string>
+    <string name="affected_lines">קווים מושפעים: %1$s</string>
+    <string name="no_alerts_favorites">אין שיבושים פעילים בקווים או בתחנות המועדפים שלך</string>
+
+    <!-- Settings -->
+    <string name="settings_language">שפה</string>
+    <string name="lang_system">ברירת מחדל של המערכת</string>
+    <string name="lang_he">עברית (RTL)</string>
+    <string name="lang_en">English (LTR)</string>
+    <string name="settings_appearance">נראות</string>
+    <string name="theme_mode">ערכת נושא</string>
+    <string name="theme_system">מערכת</string>
+    <string name="theme_light">בהיר</string>
+    <string name="theme_dark">כהה</string>
+    <string name="dynamic_color">צבע דינמי (Material You)</string>
+    <string name="dynamic_color_desc">התאמת צבעים לטפט המכשיר (Android 12+)</string>
+    <string name="settings_navigation">ניווט והתראות ירידה</string>
+    <string name="get_off_trigger">תזמון התראת ירידה</string>
+    <string name="stops_before_1">תחנה אחת לפני</string>
+    <string name="stops_before_2">2 תחנות לפני</string>
+    <string name="alert_sound">צליל התראה</string>
+    <string name="alert_vibration">רטט בהתראה</string>
+    <string name="lock_screen_notif">התראה חיה במסך הנעילה</string>
+    <string name="settings_routing">העדפות מסלול ברירת מחדל</string>
+    <string name="max_walk_distance">מרחק הליכה מרבי: %1$d מ׳</string>
+    <string name="prefer_accessible">העדף מסלולים נגישים</string>
+    <string name="settings_data">נתונים ואחסון</string>
+    <string name="data_mode">מקור נתוני תחבורה</string>
+    <string name="data_mode_live">נתונים פתוחים בזמן אמת (OpenBus + Photon)</string>
+    <string name="data_mode_demo">מצב הדגמה לא מקוון (ישראל)</string>
+    <string name="clear_recent_searches">נקה חיפושים אחרונים</string>
+    <string name="clear_cache">נקה מטמון מפה ולוחות זמנים</string>
+    <string name="cleared_toast">נוקה בהצלחה</string>
+    <string name="app_version">גרסה %1$s</string>
+    <string name="open_source_licenses">רישיונות קוד פתוח</string>
+
+    <!-- Widgets -->
+    <string name="widget_nearby_name">תפנית — תחנות קרובות</string>
+    <string name="widget_nearby_description">התחנה הקרובה ו-3 הקווים הבאים בזמן אמת</string>
+    <string name="widget_commute_name">תפנית — נסיעה מהירה</string>
+    <string name="widget_commute_description">קיצורי דרך לבית, לעבודה ולקווים מועדפים</string>
+    <string name="widget_updated_at">עודכן ב-%1$s</string>
+    <string name="widget_refresh">רענן</string>
+
+    <!-- Back -->
+    <string name="navigate_back">חזור</string>
+</resources>
