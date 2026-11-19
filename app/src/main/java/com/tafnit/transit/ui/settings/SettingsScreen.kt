@@ -1,5 +1,7 @@
 package com.tafnit.transit.ui.settings
 
+import android.content.Intent
+import android.net.Uri
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.Arrangement
@@ -13,12 +15,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.SystemUpdate
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -48,6 +55,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import com.tafnit.transit.BuildConfig
 import com.tafnit.transit.R
+import com.tafnit.transit.data.remote.GitHubReleaseApiService
+import com.tafnit.transit.data.remote.VersionComparator
 import com.tafnit.transit.domain.model.AppLanguage
 import com.tafnit.transit.domain.model.ThemeMode
 import com.tafnit.transit.domain.model.TransitMode
@@ -56,22 +65,70 @@ import com.tafnit.transit.domain.repository.PlacesRepository
 import com.tafnit.transit.domain.repository.TransitRepository
 import com.tafnit.transit.domain.repository.UserPreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
+sealed class UpdateCheckState {
+    data object Idle : UpdateCheckState()
+    data object Checking : UpdateCheckState()
+    data class UpdateAvailable(
+        val tagName: String,
+        val notes: String,
+        val downloadUrl: String
+    ) : UpdateCheckState()
+    data class UpToDate(val currentVersion: String) : UpdateCheckState()
+    data class Error(val releasesUrl: String) : UpdateCheckState()
+}
+
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val preferencesRepository: UserPreferencesRepository,
     private val placesRepository: PlacesRepository,
-    private val transitRepository: TransitRepository
+    private val transitRepository: TransitRepository,
+    private val gitHubReleaseApi: GitHubReleaseApiService
 ) : ViewModel() {
 
     val preferences: StateFlow<UserPreferences> = preferencesRepository.preferences
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), UserPreferences())
+
+    private val _updateState = MutableStateFlow<UpdateCheckState>(UpdateCheckState.Idle)
+    val updateState: StateFlow<UpdateCheckState> = _updateState.asStateFlow()
+
+    fun checkForUpdates() {
+        viewModelScope.launch {
+            _updateState.value = UpdateCheckState.Checking
+            runCatching {
+                gitHubReleaseApi.getLatestRelease()
+            }.onSuccess { release ->
+                val apkUrl = release.assets
+                    .firstOrNull { it.name.endsWith(".apk", ignoreCase = true) }
+                    ?.browserDownloadUrl
+                    ?.takeIf { it.isNotBlank() }
+                    ?: release.htmlUrl
+                if (VersionComparator.isNewer(release.tagName, BuildConfig.VERSION_NAME)) {
+                    _updateState.value = UpdateCheckState.UpdateAvailable(
+                        tagName = release.tagName,
+                        notes = release.body?.takeIf { it.isNotBlank() } ?: release.name.orEmpty(),
+                        downloadUrl = apkUrl
+                    )
+                } else {
+                    _updateState.value = UpdateCheckState.UpToDate(BuildConfig.VERSION_NAME)
+                }
+            }.onFailure {
+                _updateState.value = UpdateCheckState.Error("https://github.com/dor2500/tafnit/releases")
+            }
+        }
+    }
+
+    fun dismissUpdateDialog() {
+        _updateState.value = UpdateCheckState.Idle
+    }
 
     fun setLanguage(lang: AppLanguage) {
         viewModelScope.launch {
@@ -147,6 +204,7 @@ fun SettingsScreen(
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
     val prefs by viewModel.preferences.collectAsStateWithLifecycle()
+    val updateState by viewModel.updateState.collectAsStateWithLifecycle()
     val context = LocalContext.current
     var showLicenses by remember { mutableStateOf(false) }
 
@@ -334,6 +392,28 @@ fun SettingsScreen(
                             Text(stringResource(R.string.clear_cache))
                         }
                     }
+                    FilledTonalButton(
+                        onClick = viewModel::checkForUpdates,
+                        enabled = updateState !is UpdateCheckState.Checking,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        if (updateState is UpdateCheckState.Checking) {
+                            CircularProgressIndicator(
+                                modifier = Modifier.size(18.dp),
+                                strokeWidth = 2.dp
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(stringResource(R.string.checking_updates))
+                        } else {
+                            Icon(
+                                imageVector = Icons.Rounded.SystemUpdate,
+                                contentDescription = null,
+                                modifier = Modifier.size(18.dp)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(stringResource(R.string.check_for_updates))
+                        }
+                    }
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
@@ -351,6 +431,89 @@ fun SettingsScreen(
                 }
             }
         }
+    }
+
+    when (val uState = updateState) {
+        is UpdateCheckState.UpdateAvailable -> {
+            AlertDialog(
+                onDismissRequest = viewModel::dismissUpdateDialog,
+                title = { Text(stringResource(R.string.update_available_title, uState.tagName)) },
+                text = {
+                    Text(
+                        uState.notes.ifBlank { "https://github.com/dor2500/tafnit/releases" }
+                    )
+                },
+                confirmButton = {
+                    FilledTonalButton(
+                        onClick = {
+                            context.startActivity(
+                                Intent(Intent.ACTION_VIEW, Uri.parse(uState.downloadUrl))
+                            )
+                            viewModel.dismissUpdateDialog()
+                        }
+                    ) {
+                        Text(stringResource(R.string.update_download_apk))
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = viewModel::dismissUpdateDialog) {
+                        Text(stringResource(R.string.cancel))
+                    }
+                }
+            )
+        }
+        is UpdateCheckState.UpToDate -> {
+            AlertDialog(
+                onDismissRequest = viewModel::dismissUpdateDialog,
+                title = { Text(stringResource(R.string.up_to_date_title)) },
+                text = { Text(stringResource(R.string.up_to_date_body, uState.currentVersion)) },
+                confirmButton = {
+                    FilledTonalButton(
+                        onClick = {
+                            context.startActivity(
+                                Intent(
+                                    Intent.ACTION_VIEW,
+                                    Uri.parse("https://github.com/dor2500/tafnit/releases")
+                                )
+                            )
+                            viewModel.dismissUpdateDialog()
+                        }
+                    ) {
+                        Text(stringResource(R.string.update_open_releases))
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = viewModel::dismissUpdateDialog) {
+                        Text(stringResource(R.string.cancel))
+                    }
+                }
+            )
+        }
+        is UpdateCheckState.Error -> {
+            AlertDialog(
+                onDismissRequest = viewModel::dismissUpdateDialog,
+                title = { Text(stringResource(R.string.check_for_updates)) },
+                text = { Text(stringResource(R.string.update_check_failed)) },
+                confirmButton = {
+                    FilledTonalButton(
+                        onClick = {
+                            context.startActivity(
+                                Intent(Intent.ACTION_VIEW, Uri.parse(uState.releasesUrl))
+                            )
+                            viewModel.dismissUpdateDialog()
+                        }
+                    ) {
+                        Text(stringResource(R.string.update_open_releases))
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = viewModel::dismissUpdateDialog) {
+                        Text(stringResource(R.string.cancel))
+                    }
+                }
+            )
+        }
+        else -> Unit
     }
 
     if (showLicenses) {

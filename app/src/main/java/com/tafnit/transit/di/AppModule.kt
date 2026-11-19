@@ -10,6 +10,7 @@ import com.tafnit.transit.data.local.FavoriteStopDao
 import com.tafnit.transit.data.local.RecentSearchDao
 import com.tafnit.transit.data.local.TafnitDatabase
 import com.tafnit.transit.data.local.UserPreferencesRepositoryImpl
+import com.tafnit.transit.data.remote.GitHubReleaseApiService
 import com.tafnit.transit.data.remote.OpenBusApiService
 import com.tafnit.transit.data.remote.PhotonApiService
 import com.tafnit.transit.data.repository.LocationRepositoryImpl
@@ -93,6 +94,21 @@ object NetworkAndDatabaseModule {
     @Singleton
     fun provideOpenBusApi(@Named("openbus") retrofit: Retrofit): OpenBusApiService =
         retrofit.create(OpenBusApiService::class.java)
+
+    @Provides
+    @Singleton
+    @Named("github")
+    fun provideGitHubRetrofit(client: OkHttpClient, json: Json): Retrofit =
+        Retrofit.Builder()
+            .baseUrl("https://api.github.com/")
+            .client(client)
+            .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
+            .build()
+
+    @Provides
+    @Singleton
+    fun provideGitHubReleaseApi(@Named("github") retrofit: Retrofit): GitHubReleaseApiService =
+        retrofit.create(GitHubReleaseApiService::class.java)
 
     @Provides
     @Singleton

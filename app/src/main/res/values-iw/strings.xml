@@ -172,6 +172,14 @@
     <string name="cleared_toast">נוקה בהצלחה</string>
     <string name="app_version">גרסה %1$s</string>
     <string name="open_source_licenses">רישיונות קוד פתוח</string>
+    <string name="check_for_updates">בדוק עדכונים</string>
+    <string name="checking_updates">בודק שחרורים ב-GitHub…</string>
+    <string name="update_available_title">קיים עדכון חדש (%1$s)</string>
+    <string name="up_to_date_title">האפליקציה מעודכנת</string>
+    <string name="up_to_date_body">תפנית %1$s היא הגרסה העדכנית ביותר ב-GitHub.</string>
+    <string name="update_download_apk">הורד APK</string>
+    <string name="update_open_releases">פתח עמוד Releases</string>
+    <string name="update_check_failed">לא ניתן לבדוק עדכונים כרגע. אפשר לפתוח את עמוד השחרורים ב-GitHub.</string>
 
     <!-- Widgets -->
     <string name="widget_nearby_name">תפנית — תחנות קרובות</string>

@@ -172,6 +172,14 @@
     <string name="cleared_toast">Cleared successfully</string>
     <string name="app_version">Version %1$s</string>
     <string name="open_source_licenses">Open-Source Licenses</string>
+    <string name="check_for_updates">Check for Updates</string>
+    <string name="checking_updates">Checking GitHub Releases…</string>
+    <string name="update_available_title">Update Available (%1$s)</string>
+    <string name="up_to_date_title">You\'re Up to Date</string>
+    <string name="up_to_date_body">Tafnit %1$s is the latest release on GitHub.</string>
+    <string name="update_download_apk">Download APK</string>
+    <string name="update_open_releases">Open Releases</string>
+    <string name="update_check_failed">Could not check for updates. You can still view GitHub Releases.</string>
 
     <!-- Widgets -->
     <string name="widget_nearby_name">Tafnit Nearby Arrivals</string>
